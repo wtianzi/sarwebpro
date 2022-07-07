@@ -26,7 +26,12 @@
         height: 100%;
         width: 100%;
       }
-
+      
+      #editArea{
+          overflow-y: scroll;
+          height: calc(90vh);
+          width:320px;
+      }
       #sidebar {
         z-index: 99;
         position: absolute;
@@ -318,6 +323,7 @@
         url: "//elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer/"//"https://sampleserver6.arcgisonline.com/arcgis/rest/services/Elevation/MtBaldy_Elevation/ImageServer"
       });
 
+        // esriConfig.apiKey = "AAPKe16eba93913249a69ece454d60c498bbTJBjBUN0FAWC3xKYJ9uhSf9CBiqbiAFOb0Ylly-bmHRlwuLuH-KEhBxQYaQ8U75e";
       const map = new Map({
         basemap: "hybrid",//"hybrid",//"satellite",
         //ground: "world-elevation",
@@ -1663,7 +1669,8 @@
                    let task_url="{% url 'taskgenerationform' %}"+"/"+t_tasknotes+'_'+'0/';
                    //console.log(task_url);
                    //let win = window.open("{% url 'taskgenerationform' %}", '_blank');
-                   let win = window.open(task_url, '_blank');
+                   
+                    let win = window.open(task_url, '_blank');
                    win.focus();
                    //open a new tab for task TaskGeneration
 
@@ -3224,7 +3231,7 @@
           <option value="1">Scene 2</option>
           <option value="2">Scene 3</option>
         </select>
-        <input type="button" id="label_ic" value="Load" style="display:none"></input>
+        <input type="button" id="label_ic" value="Load" style="display:none"/>
       </div>
 
       <div>
@@ -3235,7 +3242,7 @@
           <option value="hiker" selected>Hiker</option>
 
         </select>
-        <input type="button" id="label_lpt" value="Switch" style="display:none"></input>
+        <input type="button" id="label_lpt" value="Switch" style="display:none"/>
       </div>
 
       <div>
@@ -3247,11 +3254,11 @@
       <!--div><input type="checkbox" name="voronoi" class="check" value="clear"> Freehand Polygon</input></div-->
 
       <input type="button" class="edit-button" value="Generate task" id="btngeneratearea"/>
-      <input type="button" class="edit-button" value="Edit cells" id="btneditcells" style="display:none"/>
+      <input type="button" class="edit-button" value="Edit cells" id="btneditcells" />
 
-      <div  style="display:none">
-        <input type="text" class="bt_save_edit" id="tasknotes" value="Task_name"></input>
-        <input type="button" class="bt_save" value="Save Task" id="savetasks"></input>
+      <div>
+        <input type="text" class="bt_save_edit" id="tasknotes" value="Task_name"/>
+        <input type="button" class="bt_save" value="Save Task" id="savetasks"/>
       </div>
     </div>
 
@@ -3339,7 +3346,7 @@
     </div>
 
     <hr>
-    <div id="draw" style="display:none">
+    <div id="draw">
       <h3 class="list-heading">Map measurement tools</h3>
       <div><input type="button" class="edit-button" value="Measure distance" id="distanceButton"></input></div>
       <div><input type="button" class="edit-button" value="Measure area" id="areaButton"></input></div>

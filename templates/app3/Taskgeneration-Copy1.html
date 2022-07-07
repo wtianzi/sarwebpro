@@ -26,12 +26,7 @@
         height: 100%;
         width: 100%;
       }
-      
-      #editArea{
-          overflow-y: scroll;
-          height: calc(90vh);
-          width:320px;
-      }
+
       #sidebar {
         z-index: 99;
         position: absolute;
@@ -1669,8 +1664,7 @@
                    let task_url="{% url 'taskgenerationform' %}"+"/"+t_tasknotes+'_'+'0/';
                    //console.log(task_url);
                    //let win = window.open("{% url 'taskgenerationform' %}", '_blank');
-                   
-                    let win = window.open(task_url, '_blank');
+                   let win = window.open(task_url, '_blank');
                    win.focus();
                    //open a new tab for task TaskGeneration
 
@@ -3231,7 +3225,7 @@
           <option value="1">Scene 2</option>
           <option value="2">Scene 3</option>
         </select>
-        <input type="button" id="label_ic" value="Load" style="display:none"/>
+        <input type="button" id="label_ic" value="Load" style="display:none"></input>
       </div>
 
       <div>
@@ -3242,7 +3236,7 @@
           <option value="hiker" selected>Hiker</option>
 
         </select>
-        <input type="button" id="label_lpt" value="Switch" style="display:none"/>
+        <input type="button" id="label_lpt" value="Switch" style="display:none"></input>
       </div>
 
       <div>
@@ -3254,11 +3248,11 @@
       <!--div><input type="checkbox" name="voronoi" class="check" value="clear"> Freehand Polygon</input></div-->
 
       <input type="button" class="edit-button" value="Generate task" id="btngeneratearea"/>
-      <input type="button" class="edit-button" value="Edit cells" id="btneditcells" />
+      <input type="button" class="edit-button" value="Edit cells" id="btneditcells" style="display:none"/>
 
-      <div>
-        <input type="text" class="bt_save_edit" id="tasknotes" value="Task_name"/>
-        <input type="button" class="bt_save" value="Save Task" id="savetasks"/>
+      <div  style="display:none">
+        <input type="text" class="bt_save_edit" id="tasknotes" value="Task_name"></input>
+        <input type="button" class="bt_save" value="Save Task" id="savetasks"></input>
       </div>
     </div>
 

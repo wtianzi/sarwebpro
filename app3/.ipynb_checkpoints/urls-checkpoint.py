@@ -97,6 +97,7 @@ urlpatterns = [
     path('realdatalocationfiltered',TemplateView.as_view(template_name="app3/realdatalocation_filtered.html")),
     path('word',TemplateView.as_view(template_name="app3/words.html")),
     path('words',TemplateView.as_view(template_name="app3/word-spell.html")),
+    path('SARAWSMT',TemplateView.as_view(template_name="app3/SAR_AWSMechTurk_Test.html")),
     #path('index',TaskIndexView.asView()),
 ]
 

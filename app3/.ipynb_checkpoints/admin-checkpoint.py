@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import ClueMedia
-from .models import GPSData,DataStorage,WaypointsData,GPShistoricalData,ExperimentDataStorage,QuestionnaireModel,ParticipantStatusModel,DemographicsModel,PostExpSurveyModel,WebapplicationModel
+from .models import GPSData,DataStorage,WaypointsData,GPShistoricalData,ExperimentDataStorage,QuestionnaireModel,ParticipantStatusModel,DemographicsModel,PostExpSurveyModel,WebapplicationModel,TaskAssignment
 import csv
 from django.http import HttpResponse
 # Register your models here.
@@ -161,3 +161,27 @@ class WebapplicationModelAdmin(admin.ModelAdmin):
     download_csv.short_description = "Download CSV file for selected stats."
     pass
 admin.site.register(WebapplicationModel, WebapplicationModelAdmin)
+
+
+
+class TaskAssignmentAdmin(admin.ModelAdmin):
+    actions = ['download_csv']
+    list_display =['id','resourcetype','planningno','priority','task_complete','task_partially_finished','urgent_follow_up','task_number','team_identifier','resource_type','task_map','branch','division_group','incident_name','task_instructions','previous_search','transportation','equipment_requirements','expected_time_frame','expected_time_frame_input','target_pod_subject','target_pod_subject_input','target_pod_clues','target_pod_clues_input','team_nearby','team_nearby_input','applicable_clues','terrain_hazrds','weather_safety_issues','press_family_plans','subject_information','rescue_find_plans','others','others_input','team_call_sign','freq_team','base_call_sign','freq_base','pertinent_phone_no','base','check_in_feq','check_in_hour','tactical_1_function','tactical_1_freq','tactical_1_comments','tactical_2_function','tactical_2_freq','tactical_2_comments','tactical_3_function','tactical_3_freq','tactical_3_comments','tactical_4_function','tactical_4_freq','tactical_4_comments','note_safety_message','prepared_by','briefed_by','time_out','created_at','updated_at']
+    
+    def download_csv(self, request, queryset):
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+        writer = csv.writer(response)
+
+        writer.writerow(field_names)
+        for obj in queryset:
+            row = writer.writerow([getattr(obj, field) for field in field_names])
+
+        return response
+
+    download_csv.short_description = "Download CSV file for selected stats."
+    pass
+admin.site.register(TaskAssignment, TaskAssignmentAdmin)
