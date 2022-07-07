@@ -1,7 +1,7 @@
-# SAR Web User Interface Demo
+# SAR Web User Interface Demo (Updated 07/2022)
 ![Web interface](screen/taskassign.png)
+![Web interface_new](screen/main_07072022.png)
 ![Trajectory](screen/trajectory.gif)
-![Heatmap](screen/trail_hiker1_heatmap.gif)
 [more examples](screen/)
 ## Built based on
 - DJango as sever
@@ -10,16 +10,8 @@
 - SQLite as database
 - DJango REST freamwork is needed
 
-0811
-Professional page to be changed:
-1. subjective questionnaire (per task) http://192.168.1.76:8000/questionnaireform/1628714166137/16/8/
-2. 
-
-
+# Main demo page:
 https://sar.caslab.ece.vt.edu/
-http://sar.caslab.ece.vt.edu/experiment
-
-User interface demo: [https://sites.google.com/vt.edu/vacsesardemo](https://sites.google.com/vt.edu/vacsesardemo/home)
 
 # Experiment flow:
 http://localhost:8000/experiment/consentform
@@ -34,6 +26,15 @@ http://localhost:8000/experiment/consentform
 - loop end
 - post experiment questionnaire
 
+# Admin database page:
+http://127.0.0.1:8000/admin
+Create user: `python manage.py createsuperuser`
+![Admin](screen/admin.png)
+## Waypoint data:
+Waypointsdata:
+`[{"stamp":0,"timestamp":1,"long":-80.5724,"lat":37.187},{"stamp":2,"timestamp":2,"long":-80.5725,"lat":37.187},{"stamp":3,"timestamp":3,"long":-80.5735,"lat":37.187},{"stamp":4,"timestamp":4,"long":-80.5745,"lat":37.157},{"stamp":5,"timestamp":5,"long":-80.5755,"lat":37.167},{"stamp":6,"timestamp":6,"long":-80.5765,"lat":37.177}]`
+
+-----------2021-------------
 Windows setup
 - db: change __init__.py -> use pymysql
 
@@ -51,7 +52,6 @@ Add two methods of generate heatmap
 - add a png file to viewdiv
 
 ![geojsonLayer](screen/heatmap_esri.png)
-![lostpersonmodel](screen/lost_person_model.png)
 ![watersheld](screen/watersheld.png)
 ![watersheld2](screen/watersheld2.png)
 
