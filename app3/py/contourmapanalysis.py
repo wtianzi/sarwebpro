@@ -114,10 +114,13 @@ def loadContour(inrange=10):
             a=json.loads(content)
             arr=np.array(a)
             all_arr.append(arr)
-    all_arr=np.array(all_arr)
+    all_arr=np.array(all_arr,dtype=object)
     return all_arr
 
 def CalculationMaxMin(arr1,arr2):
+    arr1=[item for item in arr1 if item!=[]]
+    arr2=[item for item in arr2 if item!=[]]
+
     maxxy=[]
     minxy=[]
     for arr in arr1:
@@ -190,6 +193,7 @@ def ContorImageFill(contours,img_h=760,img_w=1024):
     for item in contours:
         colorweigth=colorindex*20
         background=cv2.fillPoly(background, pts =[item], color=(0,colorweigth,0))
+        #background=cv2.drawContours(background, [item], contourIdx=-1, color=(0,colorweigth,0),thickness=5)
         colorindex+=1
     #cv2.imshow("image", background)
     #cv2.waitKey()

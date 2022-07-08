@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 from . import views
-from app3.views import IndexView,TaskGenerationView,TaskGenerationFormView,TaskassignmentExperimentView,TaskassignmentFullView,TaskIndexView,QuestionnaireFormView,ConsentFormView,SurveyPostEFormView,DemogrphicsView, WebapplicationFormView
+from app3.views import IndexView,TaskGenerationView,TaskGenerationView3D,TaskGenerationFormView,TaskassignmentExperimentView,TaskassignmentFullView,TaskIndexView,QuestionnaireFormView,ConsentFormView,SurveyPostEFormView,DemogrphicsView, WebapplicationFormView
 from app3.views import DownloadDataView
 from django.conf.urls import url
 from rest_framework import routers
@@ -15,6 +15,8 @@ router.register(r'gpshistoricaldata', views.GPShistoricalDataViewSet,basename="g
 
 urlpatterns = [
     path('', TaskGenerationView.as_view(),name='sarwebinit'),
+
+    path('sarweb3D', TaskGenerationView3D.as_view(),name='sarweb3D'),
 
     url(r'^experiment/task/$', TaskassignmentExperimentView.as_view(),name='experiment'),
     url(r'^experiment/task/(?P<participantid>\w+)/$',TaskassignmentExperimentView.as_view(),name="experiment"),
@@ -99,6 +101,8 @@ urlpatterns = [
     path('words',TemplateView.as_view(template_name="app3/word-spell.html")),
     path('SARAWSMT',TemplateView.as_view(template_name="app3/SAR_AWSMechTurk_Test.html")),
     #path('index',TaskIndexView.asView()),
+
+    url(r'^getPathFromArea$',TaskGenerationView3D.getPathFromArea,name='getPathFromArea'),
 ]
 
 urlpatterns += router.urls

@@ -15,6 +15,7 @@ from rest_framework import permissions
 
 from .py.watershed import AreaSegment
 from .py.contourmapanalysis import SegmentWeight
+from .py.pathPlanGrid import GetPathFromCell3D
 
 import csv
 from django.http import StreamingHttpResponse
@@ -346,7 +347,7 @@ class ConsentFormView(TemplateView):
         pid=request.POST.get("participantid")
         pname=request.POST.get("participantname")
         pindex=0
-        
+
         queryset = ParticipantStatusModel.objects.exclude(participantindex=None).values().order_by('-participantindex')
         if not queryset:
             pindex=0
@@ -354,11 +355,11 @@ class ConsentFormView(TemplateView):
             pindex = queryset[0]['participantindex']+1
         res=ParticipantStatusModel(participantid=pid,participantname=pname,participantindex=pindex)
         res.save()
-            
+
         pindex = pindex % 55
-        
+
         #context={"participantid":pid,"participantindex":pindex}
-        
+
         return redirect(reverse('demos',kwargs={"participantid":pid,"participantindex":str(pindex)}))
         #return render(request,'app3/exp_survey_demographics.html',context)
 
@@ -367,7 +368,7 @@ class DemogrphicsView(TemplateView):
     context={"participantid":0,"participantindex":0}
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        
+
         #context["participantid"] = kwargs['participantid']
         #context["participantindex"] = kwargs['participantindex']
         #print(context)
@@ -375,13 +376,13 @@ class DemogrphicsView(TemplateView):
     def FormToDB(request):
         pid=request.POST.get("participantid")
         pindex=request.POST.get("participantindex")
-        
+
         form=DemographicsForm(request.POST or None)
         print("form")
         if form.is_valid():
-            
+
             form.save()
-        
+
         #print(pid,pindex)
         '''
         context={"participantid":0,"participantindex":0}
@@ -389,10 +390,10 @@ class DemogrphicsView(TemplateView):
         context["participantindex"]=pindex
         return render(request,'app3/Taskgeneration_exp_v4.html',context)
         '''
-        
+
         return redirect(reverse('experiment',kwargs={"participantid":pid,"participantindex":pindex}))
-    
-    
+
+
 class SurveyPostEFormView(TemplateView):
     template_name="app3/exp_survey_postexp.html"
     context={"form":{"participantid":"0"}}
@@ -405,17 +406,17 @@ class SurveyPostEFormView(TemplateView):
         return context
 
     def FormToDB(request):
-        
+
         form=PostExpSurveyForm(request.POST or None)
-        
+
         if form.is_valid():
             form.save()
-        
+
         #context={'form': form,"flag":"success"}
-        
+
         return redirect('exp_thanks')
         #return render(request,'app3/exp_thanks.html')
-    
+
 class QuestionnaireFormView(TemplateView):
     template_name="app3/questionnaire_task.html"
     context={"form":{"participantid":"0"}}
@@ -428,7 +429,7 @@ class QuestionnaireFormView(TemplateView):
         context["title"] = int(context["scene_id"])
         #context["measurements"]=["trust","transparency","workload"]
         #print(context)
-        context["measurement_left"]=[            
+        context["measurement_left"]=[
             {"name":"transparency","question":"Model transparency: Do you know in general how the model works?","left":"Very little","right":"very much"},
             {"name":"trans1","question":"I understand what the model shows by this visualization.","left":"Not agree","right":"Agree"},
             {"name":"trans2","question":"It is easy to notice the distribution of the lost person in the area by this visualization.","left":"Not agree","right":"Agree"},
@@ -441,9 +442,9 @@ class QuestionnaireFormView(TemplateView):
             {"name":"trust3","question":"To what extent can you count on the model to do its job?","left":"Not at all","right":"Very high"},
             {"name":"trust4","question":"Your degree of trust in the model?","left":"Not at all","right":"Very high"},
             {"name":"trust5","question":"I can rely on the system to function properly","left":"not at all","right":"Very high"}
-            
+
             ]
-        context["measurement_right"]=[ 
+        context["measurement_right"]=[
             {"name":"workload","question":"Please select your workload level.","left":"Very low","right":"Very high"},
             {"name":"NASATLX1_mental","question":"How mentally demanding was the task?","left":"Very low","right":"Very high"},
             {"name":"NASATLX2_physical","question":"How physically demanding was the task?","left":"Very low","right":"Very high"},
@@ -466,16 +467,16 @@ class QuestionnaireFormView(TemplateView):
         if form.is_valid():
             #print(form)
             form.save()
-        sid=request.POST.get("sceneid")        
+        sid=request.POST.get("sceneid")
         sid=sid.rstrip('/')
         if int(sid)>=8:
-            pid=request.POST.get("participantid") 
+            pid=request.POST.get("participantid")
             #context={"participantid":pid}
             #return render(request,'app3/exp_survey_postexp.html',context)
-            
+
             #return redirect(reverse('survey_postexperiment',kwargs={"participantid":pid}))
             return redirect(reverse('survey_postexp_webapp',kwargs={"participantid":pid}))
-            
+
         context={'form': form,"flag":"success"}
         return  HttpResponse('''
    <script type="text/javascript">
@@ -489,7 +490,7 @@ class WebapplicationFormView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["participantid"] = kwargs['participantid']
-        context["measurement_left"]=[            
+        context["measurement_left"]=[
             {"name":"q1","question":"The web application is useful for SAR professionals and volunteers in conducting their missions.","left":"Strongly Disagree","right":"Strongly Agree"},
             {"name":"q2","question":"The map division function provides effective search areas for tasking.","left":"Strongly Disagree","right":"Strongly Agree"},
             {"name":"q3","question":"The map division function could save time for task assignment.","left":"Strongly Disagree","right":"Strongly Agree"},
@@ -505,7 +506,7 @@ class WebapplicationFormView(TemplateView):
             {"name":"q13","question":"I would recommend this web application to my SAR colleagues.","left":"Strongly Disagree","right":"Strongly Agree"}
             ]
         context["measurement_right"]=[
-            
+
             ]
         return context
 
@@ -519,7 +520,7 @@ class WebapplicationFormView(TemplateView):
         #print(reverse('survey_postexperiment',kwargs={"participantid":pid}))
         pid=request.POST.get("participantid")
         return redirect(reverse('survey_postexperiment',kwargs={"participantid":pid}))
-    
+
 class DownloadDataView(TemplateView):
     template_name="app3/downloaddata.html"
     context={}
@@ -616,3 +617,162 @@ class Echo:
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
+
+
+class TaskGenerationView3D(TemplateView):
+    template_name='app3/Taskgeneration3D.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        #tasks_all=Task.objects.only('taskid').distinct('taskid')
+        tasks_all=list(Task.objects.exclude(taskid=None).values_list('taskid', flat=True).distinct())
+        #print(tasks_all)
+        context['task_all']=tasks_all
+        last_n_deviceid=GPSData.objects.values().order_by('-updated_at')[:5]
+        context['gpsdevice']=last_n_deviceid
+
+        pathid = WaypointsData.objects.values().order_by('-updated_at')[:5]
+        context['dronepath']=pathid
+
+        historicalpathid = GPShistoricalData.objects.values().order_by('-updated_at')[:5]
+        context['dronehistoricalpath']=pathid
+
+        return context
+
+    def get_values(request):
+        # if this is a POST request we need to process the form data
+        if request.method == 'POST':
+            # create a form instance and populate it with data from the request:
+            form = DemoForm(request.POST)
+            #print(form)
+            # check whether it's valid:
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                # form.save_to_db()
+                return render(request, 'app3/demo.html', {'form': form})#HttpResponseRedirect('sketch')
+
+        # if a GET (or any other method) we'll create a blank form
+            else:
+                form = DemoForm()
+            return render(request, 'app3/demo.html', {'form': form})
+
+    def tasksave(request):
+        if request.method == 'POST':
+            #for item in request.POST:
+            #print(request.POST['Taskarea'])
+            #res=TestingSlideAdd(request.POST['Duress1'],request.POST['Duress2'],request.POST['Duress3'],request.POST['Duress4'])
+            task_instance = Task.objects.create(notes=request.POST['task_notes'],taskid=request.POST['task_id'],taskpolygon=request.POST['task_polygon'])
+
+            context={'title':"This is the result of tasksave",
+            'Taskarea':"here in py",
+            'flag':'success'}
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('FAIL!!!!!')
+
+    def gpsupdate(request):
+        if request.method == 'POST':
+            gpsdata_id = request.POST['id_device_id']
+            gpsitem = GPSData.objects.get(deviceid=gpsdata_id)
+            context={'gpsdata':getattr(gpsitem, 'gpsdata'),'flag':'success'}
+            #print(context)
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('FAIL!!!!!')
+
+    def pathplanningupdate(request):
+        if request.method == 'POST':
+            pathdata_id = request.POST['id_device_id']
+            pathitem = WaypointsData.objects.get(deviceid=pathdata_id)
+            #tobj={'data':getattr(pathitem, 'waypointsdata')}
+            #context={'waypointsdata':tobj,'flag':'success'}
+            context={'waypointsdata':getattr(pathitem, 'waypointsdata'),'flag':'success'}
+            #print(context)
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        return HttpResponse('FAIL!!!!!')
+
+    def gpshistoricaldataupdate(request):
+        if request.method == 'POST':
+            pathdata_id = request.POST['id_device_id']
+            pathitem = GPShistoricalData.objects.get(deviceid=pathdata_id)
+            context={'gpshistoricaldata':getattr(pathitem, 'gpshistoricaldata'),'flag':'success'}
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        return HttpResponse('FAIL!!!!!')
+
+    def gpsdatastorage(request):
+        if request.method == 'POST':
+            t_datastorage=DataStorage()
+            t_datastorage.taskid = request.POST['task_notes']
+            t_datastorage.subtaskid = request.POST['id_device_id']+"_"+request.POST['rand_gpsdevicename']
+
+            all_gpsdata=request.POST.get('all_gpsdata')
+            #print(all_gpsdata)
+
+            t_datastorage.data = {'device_id':request.POST['device_id'],'gps':all_gpsdata}
+            t_datastorage.save()
+            context={'gpsdata':all_gpsdata,'flag':'success'}
+
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('FAIL!!!!!')
+
+    def getClueMedia(request):
+        if request.method == 'POST':
+            clue_id = request.POST['photoid']
+            clueitem = ClueMedia.objects.get(id=int(clue_id))
+
+            context={'cluephotoid':str(clueitem.id),
+                    'name':str(clueitem.name),
+                    'lon':str(clueitem.longitude),
+                    'lat':str(clueitem.latitude),
+                    'url':str(clueitem.photo.url),
+                    'detail':str(clueitem.description),
+                    'flag':'success'}
+            #print(context)
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('FAIL!!!!!')
+
+    def getSegmentVal(request):
+        if request.method == 'POST':
+            print("getSegmentVal")
+            contourarr = request.POST.get('contourarr')
+            voronoiarr = request.POST.get('voronoiarr')
+            spatialReference = request.POST.get('spatialReference')
+            #image processing segment opencv pyhon
+            contourjson=json.loads(contourarr)
+            voronoijson=json.loads(voronoiarr)
+            #print(tjson)
+            res,arr_vor=SegmentWeight(contourjson,voronoijson,spatialReference)
+
+            context={'segmentval':res,'updatevoronoi':arr_vor,'flag':'success'}
+            #print(context)
+
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('Getwatershed failed!')
+    def getPathFromArea(request):
+        if request.method == 'POST':
+            print("getPathFromArea")
+            contourarr = request.POST.get('contourarr')
+            terrainobj = request.POST.get('terrainobj')
+            voronoiarr = request.POST.get('voronoiarr')
+            indexarr = request.POST.get('indexarr')
+            spatialReference = request.POST.get('spatialReference')
+            #image processing segment opencv pyhon
+            contourjson=json.loads(contourarr)
+            terrainjson=json.loads(terrainobj)
+            voronoijson=json.loads(voronoiarr)
+            indexjson=json.loads(indexarr)
+            #print(indexjson)
+            resolution = 0.0003
+            resObj=GetPathFromCell3D(contourjson, terrainjson, voronoijson, indexjson, resolution,spatialReference)
+
+            context={'path3D':resObj,'flag':'success'}
+            #print(context)
+
+            return HttpResponse(json.dumps(context)) # if everything is OK
+        # nothing went well
+        return HttpResponse('Getwatershed failed!')

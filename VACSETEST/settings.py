@@ -26,11 +26,7 @@ SECRET_KEY = '$e4kcn&@+((q03-@wbak^br%bzvv&gtf$v=16*mm98^u-u0a@@'
 DEBUG = True
 USE_TZ = True
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    '192.168.0.224',
-    '108.247.0.162',
-    '192.168.1.70',
-    '192.168.1.76',
+    '*'
 ]
 
 
@@ -90,12 +86,8 @@ WSGI_APPLICATION = 'VACSETEST.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME':'exp_pro_sarweb',
-        'USER': 'sarusr',
-        'PASSWORD':'saradmin',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
     'sqlite3': {
 
@@ -169,3 +161,5 @@ LOGOUT_REDIRECT_URL = 'home'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
