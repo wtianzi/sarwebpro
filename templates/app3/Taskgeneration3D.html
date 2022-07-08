@@ -295,8 +295,16 @@
       // url: "https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2019_Land_Cover_L48/wms",
       //url: "https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2019_Land_Cover_L48/ows?SERVICE=WMS",
 
-
       const landcoverlayer = new WMSLayer({
+          url: "https://www.mrlc.gov/geoserver/mrlc_display/ows",
+          sublayers: [
+            {
+              name: "NLCD_2019_Land_Cover_L48"
+            }
+          ]
+      });
+
+      const landcoverlayer2 = new WMSLayer({
          url: "https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2019_Land_Cover_L48/wms",
          opacity:0.5
        });
