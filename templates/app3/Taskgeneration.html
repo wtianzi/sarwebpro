@@ -26,7 +26,7 @@
         height: 100%;
         width: 100%;
       }
-      
+
       #editArea{
           overflow-y: scroll;
           height: calc(90vh);
@@ -102,6 +102,18 @@
         margin-top: 6px;
         margin-bottom: 6px;
       }
+      
+      .btnx {
+        border: none;
+        background-color: inherit;
+        padding: 14px 28px;
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-block;
+      }
+      .btnx:hover {background: #eee;}
+      .x2d {color: black;}
+      .x3d {color: dodgerblue;}
   </style>
   <script>
 
@@ -797,6 +809,9 @@
           position: "bottom-right",
           index: 5
         });
+
+        view.ui.add("map2Dvs3D", "top-left");
+
         setupEditing();
         //view.ui.add("draw-polygon", "top-left");
         draw = new Draw({
@@ -1669,7 +1684,7 @@
                    let task_url="{% url 'taskgenerationform' %}"+"/"+t_tasknotes+'_'+'0/';
                    //console.log(task_url);
                    //let win = window.open("{% url 'taskgenerationform' %}", '_blank');
-                   
+
                     let win = window.open(task_url, '_blank');
                    win.focus();
                    //open a new tab for task TaskGeneration
@@ -3210,6 +3225,10 @@
                  m_visualizationtype='byhour';
                }
          });
+
+         document.getElementById('view_x3d').addEventListener('click',function(){
+           location.href = "/sarweb3D";
+         });
       //--------------------------------------------------
     });
 
@@ -3222,6 +3241,7 @@
 
   <div id="editArea" class="editArea-container">
     <h2 class="list-heading">Search & Rescue Tools</h2>
+
     <div>
       <h3 class="list-heading">Map Division</h3>
       <div>
@@ -3423,6 +3443,10 @@
 
   <div id="viewDiv">
     <div id="sidebar" class="esri-widget" style="display:none">
+    </div>
+
+    <div id="map2Dvs3D">
+      <button id="view_x3d">3D</button>
     </div>
   </div>
 </body>

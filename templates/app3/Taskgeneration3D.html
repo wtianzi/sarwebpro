@@ -48,6 +48,21 @@
   #showtarget{
       padding: 5px;
   }
+
+  #map2Dvs3D{
+      padding: 1px;
+  }
+  .btnx {
+    border: none;
+    background-color: inherit;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btnx:hover {background: #eee;}
+  .x2d {color: dodgerblue;}
+  .x3d {color: black;}
   </style>
   <script>
 
@@ -227,6 +242,7 @@
       let m_taskpolygon={};
 
       let epsg4326_voronoiarr=[];
+      let m_DroneUpdate3D=true;
 
       const graphicInitLayer= new GraphicsLayer();
       const graphicsLayer = new GraphicsLayer({
@@ -875,6 +891,8 @@
         view3D.ui.add(ccWidget, "bottom-right");
 
         view3D.ui.add("showtarget", "top-left");
+
+        view3D.ui.add("map2Dvs3D", "top-left");
       }
       function setUpView() {
         coordinateLayer=new FeatureLayer({
@@ -3953,6 +3971,14 @@
            graphicsLayer3D_point.add(pointGraphic);
          }
 
+         function UpdateDroneLocationTimer3D(e){
+           let nmax=m_UAVRoute.length-1;
+           let center=m_UAVRoute[m_step%nmax];
+           //let center=[-80.5675,37.2015,100+m_step*20];
+           m_step=m_step+2;
+           DisplayUAVPosition_3D(center);
+         }
+
          document.getElementById("sel_lpm").onchange=function(){
 
            m_lpdata_con=[];
@@ -4104,11 +4130,24 @@
          });
          document.getElementById("bt_updateuavpostion").addEventListener("click",function(){
 
-           let nmax=m_UAVRoute.length-1;
-           let center=m_UAVRoute[m_step%nmax];
-           //let center=[-80.5675,37.2015,100+m_step*20];
-           m_step=m_step+1;
-           DisplayUAVPosition_3D(center);
+           if(m_DroneUpdate3D){
+             document.getElementById("bt_updateuavpostion").value='Stop';
+             timerid3d=setInterval(UpdateDroneLocationTimer3D,300);
+             m_DroneUpdate3D=false;
+           }
+           else{
+             clearInterval(timerid3d);
+             document.getElementById("bt_updateuavpostion").value='Update UAV Status';
+             m_DroneUpdate3D=true;
+           }
+
+          /*
+          let nmax=m_UAVRoute.length-1;
+          let center=m_UAVRoute[m_step%nmax];
+          //let center=[-80.5675,37.2015,100+m_step*20];
+          m_step=m_step+1;
+          DisplayUAVPosition_3D(center);
+          */
          });
          document.getElementById("bt_getheatmap").addEventListener("click",function(){
            // set all parameters: location, type of lost person
@@ -4159,6 +4198,9 @@
 
            });
          }
+         document.getElementById('view_x2d').addEventListener('click',function(){
+           location.href = "/";
+         });
 
         $("#flip1").click(function(){
           $("#panel1").slideToggle("slow");
@@ -4218,11 +4260,16 @@
           </div>
       </div>
 
+      <div id="map2Dvs3D">
+      	<button id="view_x2d">2D</button>
+      </div>
+
     </div>
   </div>
 
   <div id="editArea" class="editArea-container">
     <h2 class="list-heading">Search & Rescue Tools</h2>
+
     <div id="flip1" class="flip">Map Division</div>
     <div id="panel1" style="display:none">
       <h3 class="list-heading">Map Division</h3>
