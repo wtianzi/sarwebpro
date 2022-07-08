@@ -1,7 +1,7 @@
 # SAR Web User Interface Demo (Updated 07/2022)
 ![Web interface](screen/taskassign.png)
 ![Web interface_new](screen/main_07072022.png)
-![Web interface_switch](screen/switch to 3D.png)
+![Web interface_switch](screen/switch_to_3D.png)
 ![Web interface_3D](screen/3d.png)
 ![Trajectory](screen/trajectory.gif)
 [more examples](screen/)
