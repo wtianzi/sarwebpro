@@ -102,7 +102,7 @@
         margin-top: 6px;
         margin-bottom: 6px;
       }
-      
+
       .btnx {
         border: none;
         background-color: inherit;
@@ -229,9 +229,9 @@
 
       // this will be changed after the data is loaded
       let m_targetandclues={
-        "target":[-80.476, 37.20],
-        "clue":[{"clue_index":0,"status":"unfound","info":"cloth","data":[-80.46, 37.205],'photoid':1},
-                          {"clue_index":1,"status":"unfound","info":"drink","data":[-80.47, 37.20],'photoid':2}]
+        "target":[-80.476, 37.196],
+        "clue":[{"clue_index":0,"status":"unfound","info":"cloth","data":[-80.476, 37.202],'photoid':1},
+                          {"clue_index":1,"status":"unfound","info":"drink","data":[-80.47255, 37.1988],'photoid':2}]
       };
       let m_scenarios_rings={'child10to12':[800,1600,3200,9000],
       'dementia':[300,800,1900,8300],
@@ -1929,6 +1929,7 @@
            temperalgraphicLayer.removeAll();
            // ajax load image from database aka ClueMedia
 
+
            // lost person target position
            if(type==="point"){
              // draw obj to temperalgraphicLayer
@@ -1962,6 +1963,7 @@
                  latitude:m_targetandclues.clue[i].data[1],
                  spatialReference:view.spatialReference
                });
+               console.log(m_targetandclues);
 
                let t_clueobj;
 
